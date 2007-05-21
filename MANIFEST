@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/catalyst-view-textforge.t
+lib/Catalyst/View/TextForge.pm
+lib/Catalyst/Helper/View/TextForge.pm
+META.yml                                 Module meta-data (added by MakeMaker)
