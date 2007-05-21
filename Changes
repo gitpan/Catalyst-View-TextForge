@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::View::TextForge.
 
+0.02
+  - POD update 
+  - Pass reference to stash instead of expanding to list
+
 0.01  Mon May 21 16:22:19 2007
 	- original version; created by h2xs 1.23 with options
 		-XA -n catalyst-view-textforge

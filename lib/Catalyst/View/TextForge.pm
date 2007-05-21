@@ -3,7 +3,7 @@ package Catalyst::View::TextForge;
 use strict;
 use base qw/ Catalyst::View /;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 BEGIN {
   package Text::Forge::Catalyst;
@@ -29,7 +29,7 @@ sub process {
   my $tf = Text::Forge::Catalyst->new;
   $tf->search_paths($self->config->{root} || $c->config->{root});
   $tf->{catalyst} = $c;
-  eval { $tf->run($path, %{ $c->stash }) };
+  eval { $tf->run($path, $c->stash, $c) };
   if ($@) {
     my $err = "Error generating template '$path': $@";
     $c->log->error($err);
@@ -60,8 +60,11 @@ Catalyst::View::TextForge - Text::Forge View Class
 
     use base qw/ Catalyst::View::TextForge /;
 
+    # Set search path for templates (default: $c->config->{root})
     # __PACKAGE__->config->{root} = '/path/to/template/root';
-    # Defaults to $catalyst->config->{root}
+  
+    # Set cache mode (default: 1); See Text::Forge for details 
+    # __PACKAGE__->config->{cache} = 2;
 
     1;
 
@@ -72,14 +75,18 @@ Use Text::Forge templates as Catalyst views.
 Text::Forge templates are very similar to ERB/ASP/PHP in syntax.
 See the Text::Forge module for details.
 
-The contents of the Catalyst stash are passed into the template through @_.
+Templates are passed two parameters, the stash and the Catalyst object itself.
+
 Example template:
 
-  <% my %args = @_ %>
-  <h1>Hello, <%= $args{name} %><h1>
+  <% my $s = shift; # now contains $c->stash %>
+  <h1>Hello, <%= $s->{name} %><h1>
   <p>
     The current time is <%= scalar localtime %>.
   </p>
+
+The catalyst object can also be obtained through $forge->catalyst()
+from any template.
 
 =head1 SEE ALSO
 
